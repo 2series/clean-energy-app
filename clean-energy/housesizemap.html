@@ -1,0 +1,452 @@
+<!--Authors: Sarah Hsu and Caryn Willis
+Description: This file uses the program housesizemap.go to
+display to the user the map and corresponding colors.-->
+
+<!--This file is written by Sarah Hsu.-->
+<!DOCTYPE html>
+<html>
+<body style = "background-color:lightskyblue;">
+<head>
+<title>Solar Energy</title>
+</head>
+<!--Submits the form to the server-->
+<script type='text/javascript'>
+ $(document).ready(function() {
+   $('input[name=housesizeinput]').change(function(){
+     $('form').submit();
+   });
+   $('input[name=roofsize]').change(function(){
+     $('form').submit();
+   });
+ });
+ </script>
+<!--Navigation tabs (Right now the "Heat Map" tab is active)-->
+ <nav>
+ <ul>
+   <font face = "palatino">
+   <li><a href="/">Solar Energy</a></li>
+   <li><a class = "active" href="heatmap">Heat Map</a></li>
+ </font>
+ </ul>
+ </nav>
+
+ <script>
+  //Error message for if house or roof size entered is greater than 100000 or less than 0.
+  //Disappears unless the user is typing something wrong.
+   function checkInput() {
+     if (parseInt(document.getElementById('housesizeinput').value, 10) < 0 || parseInt(document.getElementById('housesizeinput').value, 10) > 100000){
+       document.getElementById('sizeerror').style.display = 'block';
+     } else if (parseInt(document.getElementById('roofinput').value, 10) < 0 || parseInt(document.getElementById('roofinput').value, 10) > 100000){
+       document.getElementById('sizeerror').style.display = 'block';
+     } else {
+       document.getElementById('sizeerror').style.display = 'none';
+     };
+   }
+ </script>
+
+
+ <body>
+ <font face = "palatino">
+   <!--Title and a short description-->
+   <header style="display:inline-block; width: 5;"><font color = "darkblue" size = "5.5">&nbsp;&nbsp;&nbsp;&nbsp;Heat Map</font></header>
+   <span><font face = "palatino" size = "3" color = "indigo">&nbsp;&nbsp;A tool to visualize recommendations across the country.</font><span>
+   <!--Displays the USA map-->
+     <img src = "https://etc.usf.edu/maps/pages/800/815/815.jpg" alt = "Map">
+     <!--Asks user for their desired house size and roof size and submits form
+     back to server. Error if house size is too big or negative-->
+     {{with $1 := .PageHouseSize}}
+     <p style = "color: blue;"> What is your desired house size? </p>
+     <form action="/displayheatmap" method = "post">
+       <input type="text" name="housesizeinput" id = "housesizeinput" onkeyup= "checkInput();" > Size (Square Feet)
+       <br>
+       <p style = "color: blue;"> What is your desired roof size? </p>
+       <input type="text" name="roofsize" id = "roofinput" onkeyup= "checkInput();" > Size (Square Feet)
+       <br>
+       <p style = "display: none; color:red" id = "sizeerror"> Please enter valid size.</p>
+       <br>
+       <input type="submit" value="Submit" id = "submit">
+     </form>
+     {{end}}
+
+<script type="text/javascript">
+//Changes the colors of the dot markers
+//and displays them on the map.
+function ChangeColors(){
+  var colors = {{.Map}};
+  document.getElementById('albuquerque').style.color = colors[0];
+  document.getElementById('anaheim').style.color = colors[1];
+  document.getElementById('arlington').style.color = colors[2];
+  document.getElementById('atlanta').style.color = colors[3];
+  document.getElementById('aurora').style.color = colors[4];
+  document.getElementById('austin').style.color = colors[5];
+  document.getElementById('bakersfield').style.color = colors[6];
+  document.getElementById('baltimore').style.color = colors[7];
+  document.getElementById('batonrouge').style.color = colors[8];
+  document.getElementById('birmingham').style.color = colors[9];
+  document.getElementById('boise').style.color = colors[10];
+  document.getElementById('boston').style.color = colors[11];
+  document.getElementById('buffalo').style.color = colors[12];
+  document.getElementById('chandler').style.color = colors[13];
+  document.getElementById('charlotte').style.color = colors[14];
+  document.getElementById('chesapeake').style.color = colors[15];
+  document.getElementById('chicago').style.color = colors[16];
+  document.getElementById('chulavista').style.color = colors[17];
+  document.getElementById('cincinnati').style.color = colors[18];
+  document.getElementById('cleveland').style.color = colors[19];
+  document.getElementById('coloradosprings').style.color = colors[20];
+  document.getElementById('columbus').style.color = colors[21];
+  document.getElementById('corpuschristi').style.color = colors[22];
+  document.getElementById('dallas').style.color = colors[23];
+  document.getElementById('denver').style.color = colors[24];
+  document.getElementById('detroit').style.color = colors[25];
+  document.getElementById('durham').style.color = colors[26];
+  document.getElementById('elpaso').style.color = colors[27];
+  document.getElementById('fortwayne').style.color = colors[28];
+  document.getElementById('fortworth').style.color = colors[29];
+  document.getElementById('fremont').style.color = colors[30];
+  document.getElementById('fresno').style.color = colors[31];
+  document.getElementById('garland').style.color = colors[32];
+  document.getElementById('gilbert').style.color = colors[33];
+  document.getElementById('glendale').style.color = colors[34];
+  document.getElementById('greensboro').style.color = colors[35];
+  document.getElementById('henderson').style.color = colors[36];
+  document.getElementById('hialeah').style.color = colors[37];
+  document.getElementById('houston').style.color = colors[38];
+  document.getElementById('indianapolis').style.color = colors[39];
+  document.getElementById('irvine').style.color = colors[40];
+  document.getElementById('irving').style.color = colors[41];
+  document.getElementById('jacksonville').style.color = colors[42];
+  document.getElementById('jersey').style.color = colors[43];
+  document.getElementById('kansas').style.color = colors[44];
+  document.getElementById('laredo').style.color = colors[45];
+  document.getElementById('lasvegas').style.color = colors[46];
+  document.getElementById('lexingtonfayette').style.color = colors[47];
+  document.getElementById('lincoln').style.color = colors[48];
+  document.getElementById('longbeach').style.color = colors[49];
+  document.getElementById('losangeles').style.color = colors[50];
+  document.getElementById('louisville').style.color = colors[51];
+  document.getElementById('lubbock').style.color = colors[52];
+  document.getElementById('madison').style.color = colors[53];
+  document.getElementById('memphis').style.color = colors[54];
+  document.getElementById('mesa').style.color = colors[55];
+  document.getElementById('miami').style.color = colors[56];
+  document.getElementById('milwaukee').style.color = colors[57];
+  document.getElementById('minneapolis').style.color = colors[58];
+  document.getElementById('nashville').style.color = colors[59];
+  document.getElementById('neworleans').style.color = colors[60];
+  document.getElementById('newyorkcity').style.color = colors[61];
+  document.getElementById('newark').style.color = colors[62];
+  document.getElementById('norfolk').style.color = colors[63];
+  document.getElementById('northlasvegas').style.color = colors[64];
+  document.getElementById('oakland').style.color = colors[65];
+  document.getElementById('oklahomacity').style.color = colors[66];
+  document.getElementById('omaha').style.color = colors[67];
+  document.getElementById('orlando').style.color = colors[68];
+  document.getElementById('philadelphia').style.color = colors[69];
+  document.getElementById('phoenix').style.color = colors[70];
+  document.getElementById('pittsburgh').style.color = colors[71];
+  document.getElementById('plano').style.color = colors[72];
+  document.getElementById('portland').style.color = colors[73];
+  document.getElementById('raleigh').style.color = colors[74];
+  document.getElementById('reno').style.color = colors[75];
+  document.getElementById('riverside').style.color = colors[76];
+  document.getElementById('sacramento').style.color = colors[77];
+  document.getElementById('sanantonio').style.color = colors[78];
+  document.getElementById('sanbernardino').style.color = colors[79];
+  document.getElementById('sandiego').style.color = colors[80];
+  document.getElementById('sanfrancisco').style.color = colors[81];
+  document.getElementById('sanjose').style.color = colors[82];
+  document.getElementById('santaana').style.color = colors[83];
+  document.getElementById('scottsdale').style.color = colors[84];
+  document.getElementById('seattle').style.color = colors[85];
+  document.getElementById('stlouis').style.color = colors[86];
+  document.getElementById('stpaul').style.color = colors[87];
+  document.getElementById('stpetersburg').style.color = colors[88];
+  document.getElementById('stockton').style.color = colors[89];
+  document.getElementById('tampa').style.color = colors[90];
+  document.getElementById('toledo').style.color = colors[91];
+  document.getElementById('tucson').style.color = colors[92];
+  document.getElementById('tulsa').style.color = colors[93];
+  document.getElementById('virginiabeach').style.color = colors[94];
+  document.getElementById('washington').style.color = colors[95];
+  document.getElementById('wichita').style.color = colors[96];
+  document.getElementById('winstonsalem').style.color = colors[97];
+      document.getElementById('albuquerque').style.display = 'block';
+      document.getElementById('anaheim').style.display = 'block';
+      document.getElementById('arlington').style.display = 'block';
+      document.getElementById('atlanta').style.display = 'block';
+      document.getElementById('aurora').style.display = 'block';
+      document.getElementById('austin').style.display = 'block';
+      document.getElementById('bakersfield').style.display = 'block';
+      document.getElementById('baltimore').style.display = 'block';
+      document.getElementById('batonrouge').style.display = 'block';
+      document.getElementById('birmingham').style.display = 'block';
+      document.getElementById('boise').style.display = 'block';
+      document.getElementById('boston').style.display = 'block';
+      document.getElementById('buffalo').style.display = 'block';
+      document.getElementById('chandler').style.display = 'block';
+      document.getElementById('charlotte').style.display = 'block';
+      document.getElementById('chesapeake').style.display = 'block';
+      document.getElementById('chicago').style.display = 'block';
+      document.getElementById('chulavista').style.display = 'block';
+      document.getElementById('cincinnati').style.display = 'block';
+      document.getElementById('cleveland').style.display = 'block';
+      document.getElementById('coloradosprings').style.display = 'block';
+      document.getElementById('columbus').style.display = 'block';
+      document.getElementById('corpuschristi').style.display = 'block';
+      document.getElementById('dallas').style.display = 'block';
+      document.getElementById('denver').style.display = 'block';
+      document.getElementById('detroit').style.display = 'block';
+      document.getElementById('durham').style.display = 'block';
+      document.getElementById('elpaso').style.display = 'block';
+      document.getElementById('fortwayne').style.display = 'block';
+      document.getElementById('fortworth').style.display = 'block';
+      document.getElementById('fremont').style.display = 'block';
+      document.getElementById('fresno').style.display = 'block';
+      document.getElementById('garland').style.display = 'block';
+      document.getElementById('gilbert').style.display = 'block';
+      document.getElementById('glendale').style.display = 'block';
+      document.getElementById('greensboro').style.display = 'block';
+      document.getElementById('henderson').style.display = 'block';
+      document.getElementById('hialeah').style.display = 'block';
+      document.getElementById('houston').style.display = 'block';
+      document.getElementById('indianapolis').style.display = 'block';
+      document.getElementById('irvine').style.display = 'block';
+      document.getElementById('irving').style.display = 'block';
+      document.getElementById('jacksonville').style.display = 'block';
+      document.getElementById('jersey').style.display = 'block';
+      document.getElementById('kansas').style.display = 'block';
+      document.getElementById('laredo').style.display = 'block';
+      document.getElementById('lasvegas').style.display = 'block';
+      document.getElementById('lexingtonfayette').style.display = 'block';
+      document.getElementById('lincoln').style.display = 'block';
+      document.getElementById('longbeach').style.display = 'block';
+      document.getElementById('losangeles').style.display = 'block';
+      document.getElementById('louisville').style.display = 'block';
+      document.getElementById('lubbock').style.display = 'block';
+      document.getElementById('madison').style.display = 'block';
+      document.getElementById('memphis').style.display = 'block';
+      document.getElementById('mesa').style.display = 'block';
+      document.getElementById('miami').style.display = 'block';
+      document.getElementById('milwaukee').style.display = 'block';
+      document.getElementById('minneapolis').style.display = 'block';
+      document.getElementById('nashville').style.display = 'block';
+      document.getElementById('neworleans').style.display = 'block';
+      document.getElementById('newyorkcity').style.display = 'block';
+      document.getElementById('newark').style.display = 'block';
+      document.getElementById('norfolk').style.display = 'block';
+      document.getElementById('northlasvegas').style.display = 'block';
+      document.getElementById('oakland').style.display = 'block';
+      document.getElementById('oklahomacity').style.display = 'block';
+      document.getElementById('omaha').style.display = 'block';
+      document.getElementById('orlando').style.display = 'block';
+      document.getElementById('philadelphia').style.display = 'block';
+      document.getElementById('phoenix').style.display = 'block';
+      document.getElementById('pittsburgh').style.display = 'block';
+      document.getElementById('plano').style.display = 'block';
+      document.getElementById('portland').style.display = 'block';
+      document.getElementById('raleigh').style.display = 'block';
+      document.getElementById('reno').style.display = 'block';
+      document.getElementById('riverside').style.display = 'block';
+      document.getElementById('sacramento').style.display = 'block';
+      document.getElementById('sanantonio').style.display = 'block';
+      document.getElementById('sanbernardino').style.display = 'block';
+      document.getElementById('sandiego').style.display = 'block';
+      document.getElementById('sanfrancisco').style.display = 'block';
+      document.getElementById('sanjose').style.display = 'block';
+      document.getElementById('santaana').style.display = 'block';
+      document.getElementById('scottsdale').style.display = 'block';
+      document.getElementById('seattle').style.display = 'block';
+      document.getElementById('stlouis').style.display = 'block';
+      document.getElementById('stpaul').style.display = 'block';
+      document.getElementById('stpetersburg').style.display = 'block';
+      document.getElementById('stockton').style.display = 'block';
+      document.getElementById('tampa').style.display = 'block';
+      document.getElementById('toledo').style.display = 'block';
+      document.getElementById('tucson').style.display = 'block';
+      document.getElementById('tulsa').style.display = 'block';
+      document.getElementById('virginiabeach').style.display = 'block';
+      document.getElementById('washington').style.display = 'block';
+      document.getElementById('wichita').style.display = 'block';
+      document.getElementById('winstonsalem').style.display = 'block';
+    }
+</script>
+<!--MAP MARKERS (DOTS) Changes colors based off of recommendations-->
+<!--Albuquerque--><div style="display: none; position:absolute; TOP:422px; LEFT:279px" id = "albuquerque"><font size = "5000"> . </font></div>
+<!--Anaheim--><div style="display: none; position:absolute; TOP:431px; LEFT:97px"  id = "anaheim"><font size = "5000"> . </font></div>
+<!--Arlington--><div style="display: none; position:absolute; TOP:479px; LEFT:440px" id = "arlington"><font size = "5000"> . </font></div>
+<!--Atlanta--><div style="display: none; position:absolute; TOP:446px; LEFT:657px"  id = "atlanta"><font size = "5000"> . </font></div>
+<!--Aurora--><div style="display: none; position:absolute; TOP:338px; LEFT:317px"  id = "aurora"><font size = "5000"> . </font></div>
+<!--Austin--><div style="display: none; position:absolute; TOP:526px; LEFT:428px"  id = "austin"><font size = "5000"> . </font></div>
+<!--Bakersfield--><div style="display: none; position:absolute; TOP:385px; LEFT:79px"  id = "bakersfield"><font size = "5000"> . </font></div>
+<!--Baltimore--><div style="display: none; position:absolute; TOP:316px; LEFT:752px"  id = "baltimore"><font size = "5000"> . </font></div>
+<!--Baton Rouge--><div style="display: none; position:absolute; TOP:519px; LEFT:538px"  id = "batonrouge"><font size = "5000"> . </font></div>
+<!--Birmingham--><div style="display: none; position:absolute; TOP:455px; LEFT:607px"id = "birmingham"><font size = "5000"> . </font></div>
+<!--Boise--><div style="display: none; position:absolute; TOP:230px; LEFT:162px"  id = "boise"><font size = "5000"> . </font></div>
+<!--Boston--><div style="display: none; position:absolute; TOP:230px; LEFT:819px"  id = "boston"><font size = "5000"> . </font></div>
+<!--Buffalo--><div style="display: none; position:absolute; TOP:246px; LEFT:702px"  id = "buffalo"><font size = "5000"> . </font></div>
+<!--Chandler--><div style="display: none; position:absolute; TOP:448px; LEFT:195px"  id = "chandler"><font size = "5000"> . </font></div>
+<!--Charlotte--><div style="display: none; position:absolute; TOP:410px; LEFT:699px"  id = "charlotte"><font size = "5000"> . </font></div>
+<!--Chesapeake--><div style="display: none; position:absolute; TOP:364px; LEFT:770px"  id = "chesapeake"><font size = "5000"> . </font></div>
+<!--Chicago--><div style="display: none; position:absolute; TOP:291px; LEFT:577px"  id = "chicago"><font size = "5000"> . </font></div>
+<!--Chula Vista--><div style="display: none; position:absolute; TOP:446px; LEFT:102px"  id = "chulavista"><font size = "5000"> . </font></div>
+<!--Cincinnati--><div style="display: none; position:absolute; TOP:338px; LEFT:631px"  id = "cincinnati"><font size = "5000"> . </font></div>
+<!--Cleveland--><div style="display: none; position:absolute; TOP:283px; LEFT:670px"  id = "cleveland"><font size = "5000"> . </font></div>
+<!--Colorado Springs--><div style="display: none; position:absolute; TOP:352px; LEFT:315px"  id = "coloradosprings"><font size = "5000"> . </font></div>
+<!--Columbus--><div style="display: none; position:absolute; TOP:323px; LEFT:655px"  id = "columbus"><font size = "5000"> . </font></div>
+<!--Corpus Christi--><div style="display: none; position:absolute; TOP:585px; LEFT:423px"  id = "corpuschristi"><font size = "5000"> . </font></div>
+<!--Dallas--><div style="display: none; position:absolute; TOP:479px; LEFT:440px"  id = "dallas"><font size = "5000"> . </font></div>
+<!--Denver--><div style="display: none; position:absolute; TOP:336px; LEFT:315px"  id = "denver"><font size = "5000"> . </font></div>
+<!--Detroit--><div style="display: none; position:absolute; TOP:274px; LEFT:643px"  id = "detroit"><font size = "5000"> . </font></div>
+<!--Durham--><div style="display: none; position:absolute; TOP:387px; LEFT:732px"  id = "durham"><font size = "5000"> . </font></div>
+<!--El Paso--><div style="display: none; position:absolute; TOP:490px; LEFT:274px"  id = "elpaso"><font size = "5000"> . </font></div>
+<!--Fort Wayne--><div style="display: none; position:absolute; TOP:301px; LEFT:614px"  id = "fortwayne"><font size = "5000"> . </font></div>
+<!--Fort Worth--><div style="display: none; position:absolute; TOP:479px; LEFT:437px"  id = "fortworth"><font size = "5000"> . </font></div>
+<!--Fremont--><div style="display: none; position:absolute; TOP:326px; LEFT:43px"  id = "fremont"><font size = "5000"> . </font></div>
+<!--Fresno--><div style="display: none; position:absolute; TOP:350px; LEFT:67px"  id = "fresno"><font size = "5000"> . </font></div>
+<!--Garland--><div style="display: none; position:absolute; TOP:476px; LEFT:444px"  id = "garland"><font size = "5000"> . </font></div>
+<!--Gilbert--><div style="display: none; position:absolute; TOP:444px; LEFT:192px"  id = "gilbert"><font size = "5000"> . </font></div>
+<!--Glendale--><div style="display: none; position:absolute; TOP:438px; LEFT:186px"  id = "glendale"><font size = "5000"> . </font></div>
+<!--Greensboro--><div style="display: none; position:absolute; TOP:390px; LEFT:729px"  id = "greensboro"><font size = "5000"> . </font></div>
+<!--Henderson--><div style="display: none; position:absolute; TOP:389px; LEFT:147px"  id = "henderson"><font size = "5000"> . </font></div>
+<!--Hialeah--><div style="display: none; position:absolute; TOP:598px; LEFT:736px"  id = "hialeah"><font size = "5000"> . </font></div>
+<!--Houston--><div style="display: none; position:absolute; TOP:535px; LEFT:464px"  id = "houston"><font size = "5000"> . </font></div>
+<!--Indianapolis--><div style="display: none; position:absolute; TOP:328px; LEFT:601px"  id = "indianapolis"><font size = "5000"> . </font></div>
+<!--Irvine--><div style="display: none; position:absolute; TOP:432px; LEFT:100px"  id = "irvine"><font size = "5000"> . </font></div>
+<!--Irving--><div style="display: none; position:absolute; TOP:475px; LEFT:434px"  id = "irving"><font size = "5000"> . </font></div>
+<!--Jacksonville--><div style="display: none; position:absolute; TOP:509px; LEFT:701px"  id = "jacksonville"><font size = "5000"> . </font></div>
+<!--Jersey City--><div style="display: none; position:absolute; TOP:275px; LEFT:785px"  id = "jersey"><font size = "5000"> . </font></div>
+<!--Kansas City--><div style="display: none; position:absolute; TOP:353px; LEFT:476px"  id = "kansas"><font size = "5000"> . </font></div>
+<!--Laredo--><div style="display: none; position:absolute; TOP:583px; LEFT:400px"  id = "laredo"><font size = "5000"> . </font></div>
+<!--Las Vegas--><div style="display: none; position:absolute; TOP:386px; LEFT:146px"  id = "lasvegas"><font size = "5000"> . </font></div>
+<!--Lexington-Fayette--><div style="display: none; position:absolute; TOP:360px; LEFT:637px"  id = "lexingtonfayette"><font size = "5000"> . </font></div>
+<!--Lincoln--><div style="display: none; position:absolute; TOP:321px; LEFT:442px"  id = "lincoln"><font size = "5000"> . </font></div>
+<!--Long Beach--><div style="display: none; position:absolute; TOP:431px; LEFT:98px"  id = "longbeach"><font size = "5000"> . </font></div>
+<!--Los Angeles--><div style="display: none; position:absolute; TOP:427px; LEFT:97px"  id = "losangeles"><font size = "5000"> . </font></div>
+<!--Louisville--><div style="display: none; position:absolute; TOP:355px; LEFT:615px"  id = "louisville"><font size = "5000"> . </font></div>
+<!--Lubbock--><div style="display: none; position:absolute; TOP:463px; LEFT:355px"  id = "lubbock"><font size = "5000"> . </font></div>
+<!--Madison--><div style="display: none; position:absolute; TOP:265px; LEFT:548px"  id = "madison"><font size = "5000"> . </font></div>
+<!--Memphis--><div style="display: none; position:absolute; TOP:425px; LEFT:547px"  id = "memphis"><font size = "5000"> . </font></div>
+<!--Mesa--><div style="display: none; position:absolute; TOP:444px; LEFT:192px"  id = "mesa"><font size = "5000"> . </font></div>
+<!--Miami--><div style="display: none; position:absolute; TOP:606px; LEFT:736px"  id = "miami"><font size = "5000"> . </font></div>
+<!--Milwaukee--><div style="display: none; position:absolute; TOP:265px; LEFT:571px"  id = "milwaukee"><font size = "5000"> . </font></div>
+<!--Minneapolis--><div style="display: none; position:absolute; TOP:233px; LEFT:490px"  id = "minneapolis"><font size = "5000"> . </font></div>
+<!--Nashville--><div style="display: none; position:absolute; TOP:404px; LEFT:598px"  id = "nashville"><font size = "5000"> . </font></div>
+<!--New Orleans--><div style="display: none; position:absolute; TOP:529px; LEFT:558px"  id = "neworleans"><font size = "5000"> . </font></div>
+<!--New York City--><div style="display: none; position:absolute; TOP:275px; LEFT:789px"  id = "newyorkcity"><font size = "5000"> . </font></div>
+<!--Newark--><div style="display: none; position:absolute; TOP:276px; LEFT:783px"  id = "newark"><font size = "5000"> . </font></div>
+<!--Norfolk--><div style="display: none; position:absolute; TOP:360px; LEFT:770px"  id = "norfolk"><font size = "5000"> . </font></div>
+<!--North Las Vegas--><div style="display: none; position:absolute; TOP:386px; LEFT:146px"  id = "northlasvegas"><font size = "5000"> . </font></div>
+<!--Oakland--><div style="display: none; position:absolute; TOP:324px; LEFT:42px"  id = "oakland"><font size = "5000"> . </font></div>
+<!--Oklahoma City--><div style="display: none; position:absolute; TOP:414px; LEFT:425px"  id = "oklahomacity"><font size = "5000"> . </font></div>
+<!--Omaha--><div style="display: none; position:absolute; TOP:317px; LEFT:453px"  id = "omaha"><font size = "5000"> . </font></div>
+<!--Orlando--><div style="display: none; position:absolute; TOP:539px; LEFT:705px"  id = "orlando"><font size = "5000"> . </font></div>
+<!--Philadelphia--><div style="display: none; position:absolute; TOP:294px; LEFT:772px"  id = "philadelphia"><font size = "5000"> . </font></div>
+<!--Phoenix--><div style="display: none; position:absolute; TOP:441px; LEFT:188px"  id = "phoenix"><font size = "5000"> . </font></div>
+<!--Pittsburgh--><div style="display: none; position:absolute; TOP:300px; LEFT:697px"  id = "pittsburgh"><font size = "5000"> . </font></div>
+<!--Plano--><div style="display: none; position:absolute; TOP:472px; LEFT:443px"  id = "plano"><font size = "5000"> . </font></div>
+<!--Portland--><div style="display: none; position:absolute; TOP:167px; LEFT:82px"  id = "portland"><font size = "5000"> . </font></div>
+<!--Raleigh--><div style="display: none; position:absolute; TOP:389px; LEFT:737px"  id = "raleigh"><font size = "5000"> . </font></div>
+<!--Reno--><div style="display: none; position:absolute; TOP:298px; LEFT:87px"  id = "reno"><font size = "5000"> . </font></div>
+<!--Riverside--><div style="display: none; position:absolute; TOP:430px; LEFT:105px"  id = "riverside"><font size = "5000"> . </font></div>
+<!--Sacramento--><div style="display: none; position:absolute; TOP:310px; LEFT:58px"  id = "sacramento"><font size = "5000"> . </font></div>
+<!--San Antonio--><div style="display: none; position:absolute; TOP:543px; LEFT:411px"  id = "sanantonio"><font size = "5000"> . </font></div>
+<!--San Bernardino--><div style="display: none; position:absolute; TOP:431px; LEFT:107px"  id = "sanbernardino"><font size = "5000"> . </font></div>
+<!--San Diego--><div style="display: none; position:absolute; TOP:443px; LEFT:100px"  id = "sandiego"><font size = "5000"> . </font></div>
+<!--San Francisco--><div style="display: none; position:absolute; TOP:327px; LEFT:37px"  id = "sanfrancisco"><font size = "5000"> . </font></div>
+<!--San Jose--><div style="display: none; position:absolute; TOP:332px; LEFT:46px"  id = "sanjose"><font size = "5000"> . </font></div>
+<!--Santa Ana--><div style="display: none; position:absolute; TOP:432px; LEFT:102px"  id = "santaana"><font size = "5000"> . </font></div>
+<!--Scottsdale--><div style="display: none; position:absolute; TOP:439px; LEFT:194px"  id = "scottsdale"><font size = "5000"> . </font></div>
+<!--Seattle--><div style="display: none; position:absolute; TOP:123px; LEFT:111px"  id = "seattle"><font size = "5000"> . </font></div>
+<!--St. Louis--><div style="display: none; position:absolute; TOP:359px; LEFT:540px"  id = "stlouis"><font size = "5000"> . </font></div>
+<!--St. Paul--><div style="display: none; position:absolute; TOP:231px; LEFT:497px"  id = "stpaul"><font size = "5000"> . </font></div>
+<!--St. Petersburg--><div style="display: none; position:absolute; TOP:562px; LEFT:690px"  id = "stpetersburg"><font size = "5000"> . </font></div>
+<!--Stockton--><div style="display: none; position:absolute; TOP:319px; LEFT:60px"  id = "stockton"><font size = "5000"> . </font></div>
+<!--Tampa--><div style="display: none; position:absolute; TOP:560px; LEFT:695px"  id = "tampa"><font size = "5000"> . </font></div>
+<!--Toledo--><div style="display: none; position:absolute; TOP:285px; LEFT:640px"  id = "toledo"><font size = "5000"> . </font></div>
+<!--Tuscon--><div style="display: none; position:absolute; TOP:466px; LEFT:201px"  id = "tucson"><font size = "5000"> . </font></div>
+<!--Tulsa--><div style="display: none; position:absolute; TOP:414px; LEFT:434px"  id = "tulsa"><font size = "5000"> . </font></div>
+<!--Virginia Beach--><div style="display: none; position:absolute; TOP:359px; LEFT:772px"  id = "virginiabeach"><font size = "5000"> . </font></div>
+<!--Washington--><div style="display: none; position:absolute; TOP:330px; LEFT:748px"  id = "washington"><font size = "5000"> . </font></div>
+<!--Wichita--><div style="display: none; position:absolute; TOP:382px; LEFT:428px"  id = "wichita"><font size = "5000"> . </font></div>
+<!--Winston-Salem--><div style="display: none; position:absolute; TOP:390px; LEFT:718px"  id = "winstonsalem"><font size = "5000"> . </font></div>
+<script>
+//Changes the colors of the markers and displays them according
+//to their recommendation.
+ChangeColors();
+</script>
+<!--This section displays a key to correspond with the heat map.-->
+<div>
+  <p style = "color: blue">In which cities should you get solar panels?</p>
+  <br>
+  <span style = "font-weight:bold"> Key: </span><br>
+  <br>
+  &nbsp;&nbsp;&nbsp;<span style = "background-color: green">Green</span>
+  <span>  &nbsp;&nbsp;&nbsp;&nbsp;Highly Recommended (over 80% of energy can be solar)</span><br>
+  &nbsp;&nbsp;&nbsp;<span style = "background-color: #FFD700">Yellow</span>
+  <span> &nbsp;&nbsp;&nbsp;Recommended (between 60% and 80% of energy can be solar)</span><br>
+  &nbsp;&nbsp;&nbsp;<span style = "background-color: red">Red</span>
+  <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Not Recommended (under 60% of energy can be solar)</span><br>
+  <p> Click to find out recommendations for solar power for your desired house size.</p>
+  <form method = "post">
+      <input type = "radio" id = "highrec" name = "recommendation" value = "highrec" onclick = "DisplayList(1)"> Highly Recommended
+      <input type = "radio" id = "rec" name = "recommendation" value = "rec" onclick = "DisplayList(2)"> Recommended
+      <input type = "radio" id = "notrec" name = "recommendation" value = "notrec" onclick = "DisplayList(3)"> Not Recommended
+  </form>
+</div>
+<script>
+//Function to display the list of cities depending on user selection.
+function DisplayList(num){
+  if (num == 1){
+    document.getElementById('greenlist').style.display = 'block';
+    document.getElementById('yellowlist').style.display = 'none';
+    document.getElementById('redlist').style.display = 'none';
+  } else if (num == 2) {
+    document.getElementById('greenlist').style.display = 'none';
+    document.getElementById('yellowlist').style.display = 'block';
+    document.getElementById('redlist').style.display = 'none';
+  } else if (num == 3) {
+    document.getElementById('greenlist').style.display = 'none';
+    document.getElementById('yellowlist').style.display = 'none';
+    document.getElementById('redlist').style.display = 'block';
+  } else {
+    document.getElementById('greenlist').style.display = 'none';
+    document.getElementById('yellowlist').style.display = 'none';
+    document.getElementById('redlist').style.display = 'none';
+  };
+}
+</script>
+<!--This section will give a list of cities that fit the choice
+that the user makes: highly recommended, recommended, not recommended.
+This is based on their house size.-->
+<div id = "greenlist" style = "display: none">
+  <p style = "color: blue">{{.GreenPercent}}% of the cities are highly recommended for this house size. </p>
+  <p >These are the cities where solar energy is highly recommended:</p>
+  {{ range $3 := .GreenList}}
+    <p style = "color: darkslategray">&nbsp;&nbsp;{{$3}}</p>
+  {{end}}
+</div>
+<div id = "yellowlist" style = "display: none">
+  <p style = "color: blue">{{.YellowPercent}}% of the cities are recommended for this house size. </p>
+  <p>These are the cities where solar energy is recommended:</p>
+  {{ range $2:= .YellowList}}
+    <p style = "color: gray">{{$2}}</p>
+  {{end}}
+</div>
+<div id = "redlist" style = "display: none">
+  <p style = "color: blue">{{.RedPercent}}% of the cities are not recommended for this house size. </p>
+  <p>These are the cities where solar energy is not recommended:</p>
+  {{ range $4 := .RedList}}
+    <p style = "color: gray">{{$4}}</p>
+  {{end}}
+
+</div>
+</font>
+</body>
+<br>
+<br>
+<br>
+<br>
+<span><font size = "2" color = "#6959CD" face = "palatino">Created by: Sarah Hsu and Caryn Willis</font></span>
+
+</html>

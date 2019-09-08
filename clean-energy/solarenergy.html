@@ -1,0 +1,564 @@
+<!--Authors: Sarah Hsu and Caryn Willis
+Description: This file uses the program solarenergy.go
+and displays to the user the information related to the
+solar panel installation in the home.-->
+
+<!--This file is written by Sarah Hsu-->
+
+<!DOCTYPE html>
+<html>
+<body style = "background-color:lightskyblue;">
+<head>
+<title>Solar Energy</title>
+</head>
+<!--Submits the form back to the server.-->
+<script type='text/javascript'>
+ $(document).ready(function() {
+   $('input[name=coordinaten]').change(function(){
+     $('form').submit();
+   });
+   $('input[name=coordinatew]').change(function(){
+     $('form').submit();
+   });
+   $('input[name=housesize]').change(function(){
+     $('form').submit();
+   });
+   $('input[name=roofsize]').change(function(){
+     $('form').submit();
+   });
+});
+</script>
+<!--Navigation tabs (Currently the "Solar Energy" tab is active)-->
+<nav>
+<ul><font face = "palatino">
+  <li><a class="active" href="/">Solar Energy</a></li>
+  <li><a href="heatmap">Heat Map</a></li>
+</font>
+</ul>
+</nav>
+
+<script>
+//Checks user input to make sure it is not too high or low.
+//Checks house size, roof size, and coordinates to make sure it is within range
+//Coordinates ranged will be displayed in the page, but the house range is
+//0 to 100000 square feet (anything higher is not realistic)
+//Will display temporary error message if it is.
+  function checkInput() {
+    if (parseInt(document.getElementById('northinput').value, 10) < -90 || parseInt(document.getElementById('northinput').value, 10) > 90) {
+      document.getElementById('coorderror').style.display = 'block';
+    } else if (parseInt(document.getElementById('westinput').value, 10) < -180 || parseInt(document.getElementById('westinput').value, 10) > 180){
+      document.getElementById('coorderror').style.display = 'block';
+    } else if (parseInt(document.getElementById('sizeinput').value, 10) < 0 || parseInt(document.getElementById('sizeinput').value, 10) > 100000){
+      document.getElementById('sizeerror').style.display = 'block';
+    } else if (parseInt(document.getElementById('roofinput').value, 10) < 0 || parseInt(document.getElementById('roofinput').value, 10) > 100000){
+      document.getElementById('sizeerror').style.display = 'block';
+    } else {
+      document.getElementById('coorderror').style.display = 'none';
+      document.getElementById('sizeerror').style.display = 'none';
+    };
+  }
+
+</script>
+
+<body>
+<!--Title and short description as a header-->
+<font face = "palatino">
+  <header style="display:inline-block; width: 5;"><font color = "darkblue" face = "palatino" size = "6">&nbsp;&nbsp;&nbsp;&nbsp;Solar Energy</font></header>
+  <span><font face = "palatino" size = "3" color = "indigo">&nbsp;&nbsp;A decision tool to help you decide whether or not to go solar.</font><span>
+  <!--Displays the USA map-->
+  <img src = "https://etc.usf.edu/maps/pages/800/815/815.jpg" alt = "Map">
+
+<!--Asks user for coordinates and house/roof size.-->
+{{with $1:=.PageCoordinates}}
+    <p style = "color: blue;"> &nbsp;&nbsp;What are your coordinates? </p>
+    <p>&nbsp;&nbsp;&nbsp;Range: -90 to 90 degrees (North), -180 to 180 degrees (West)</p>
+      <form action="/selected" method="post">
+          &nbsp;&nbsp;<input type="text" name="coordinaten" id = "northinput" onkeyup= "checkInput();"> Longitude
+          &nbsp;&nbsp;<input type="text" name="coordinatew" id = "westinput" onkeyup= "checkInput();"> Latitude
+          <br>
+          <p style = "display: none; color:red" id = "coorderror">&nbsp;&nbsp;&nbsp; Please enter valid coordinate.</p>
+          <p style = "color: blue;"> &nbsp;&nbsp;&nbsp;What is your house size? </p>
+          &nbsp;&nbsp;<input type="text" name="housesize" id = "sizeinput" onkeyup= "checkInput();" > Size (Square Feet)
+          <br>
+          <p style = "color: blue;"> &nbsp;&nbsp;&nbsp;What is your roof size? </p>
+          &nbsp;&nbsp;<input type="text" name="roofsize" id = "roofinput" onkeyup= "checkInput();" > Size (Square Feet)
+          <br>
+          <p style = "display: none; color:red" id = "sizeerror"> &nbsp;&nbsp;&nbsp;Please enter valid size.</p>
+          <br>
+          &nbsp;&nbsp;&nbsp;<input type="submit" value="Submit" id = "submit">
+      </form>
+{{end}}
+
+
+<script type="text/javascript">
+//Function to display the right marker for the user's city.
+  function Display() {
+    if ( {{.MyCity}} == "Albuquerque") {
+        document.getElementById('albuquerque').style.display = 'block';
+      } else if ( {{.MyCity}} == "Anaheim") {
+        document.getElementById('anaheim').style.display = 'block';
+      } else if ( {{.MyCity}} == "Arlington") {
+        document.getElementById('arlington').style.display = 'block';
+      } else if ( {{.MyCity}} == "Atlanta") {
+        document.getElementById('atlanta').style.display = 'block';
+      } else if ( {{.MyCity}} == "Austin") {
+        document.getElementById('austin').style.display = 'block';
+      } else if ( {{.MyCity}} == "Bakersfield") {
+        document.getElementById('bakersfield').style.display = 'block';
+      } else if ( {{.MyCity}} == "Baltimore") {
+        document.getElementById('baltimore').style.display = 'block';
+      } else if ( {{.MyCity}} == "Baton Rouge") {
+        document.getElementById('batonrouge').style.display = 'block';
+      } else if ( {{.MyCity}} == "Birmingham") {
+        document.getElementById('birmingham').style.display = 'block';
+      } else if ( {{.MyCity}} == "Boise") {
+        document.getElementById('boise').style.display = 'block';
+      } else if ( {{.MyCity}} == "Boston") {
+        document.getElementById('boston').style.display = 'block';
+      } else if ( {{.MyCity}} == "Buffalo") {
+        document.getElementById('buffalo').style.display = 'block';
+      } else if ( {{.MyCity}} == "Chandler") {
+        document.getElementById('chandler').style.display = 'block';
+      } else if ( {{.MyCity}} == "Chesapeake") {
+        document.getElementById('chesapeake').style.display = 'block';
+      } else if ( {{.MyCity}} == "Chicago") {
+        document.getElementById('chicago').style.display = 'block';
+      } else if ( {{.MyCity}} == "Chula Vista") {
+        document.getElementById('chulavista').style.display = 'block';
+      } else if ( {{.MyCity}} == "Cincinnati") {
+        document.getElementById('cincinnati').style.display = 'block';
+      } else if ( {{.MyCity}} == "Cleveland") {
+        document.getElementById('cleveland').style.display = 'block';
+      } else if ( {{.MyCity}} == "Colorado Springs") {
+        document.getElementById('coloradosprings').style.display = 'block';
+      } else if ( {{.MyCity}} == "Columbus") {
+        document.getElementById('columbus').style.display = 'block';
+      } else if ( {{.MyCity}} == "Corpus Christi") {
+        document.getElementById('columbus').style.display = 'block';
+      } else if ( {{.MyCity}} == "Dallas") {
+        document.getElementById('dallas').style.display = 'block';
+      } else if ( {{.MyCity}} == "Denver") {
+        document.getElementById('denver').style.display = 'block';
+      } else if ( {{.MyCity}} == "Detroit") {
+        document.getElementById('detroit').style.display = 'block';
+      } else if ( {{.MyCity}} == "Durham") {
+        document.getElementById('durham').style.display = 'block';
+      } else if ( {{.MyCity}} == "El Paso") {
+        document.getElementById('elpaso').style.display = 'block';
+      } else if ( {{.MyCity}} == "Fort Wayne") {
+        document.getElementById('fortwayne').style.display = 'block';
+      } else if ( {{.MyCity}} == "Fort Worth") {
+        document.getElementById('fortworth').style.display = 'block';
+      } else if ( {{.MyCity}} == "Fremont") {
+        document.getElementById('fremont').style.display = 'block';
+      } else if ( {{.MyCity}} == "Fresno") {
+        document.getElementById('fresno').style.display = 'block';
+      } else if ( {{.MyCity}} == "Garland") {
+        document.getElementById('garland').style.display = 'block';
+      } else if ( {{.MyCity}} == "Gilbert") {
+        document.getElementById('gilbert').style.display = 'block';
+      } else if ( {{.MyCity}} == "Glendale") {
+        document.getElementById('glendale').style.display = 'block';
+      } else if ( {{.MyCity}} == "Greensboro") {
+        document.getElementById('greensboro').style.display = 'block';
+      } else if ( {{.MyCity}} == "Henderson") {
+        document.getElementById('henderson').style.display = 'block';
+      } else if ( {{.MyCity}} == "Hialeah") {
+        document.getElementById('hialeah').style.display = 'block';
+      } else if ( {{.MyCity}} == "Houston") {
+        document.getElementById('houston').style.display = 'block';
+      } else if ( {{.MyCity}} == "Indianapolis") {
+        document.getElementById('indianapolis').style.display = 'block';
+      } else if ( {{.MyCity}} == "Irving") {
+        document.getElementById('irving').style.display = 'block';
+      } else if ( {{.MyCity}} == "Jacksonville") {
+        document.getElementById('jacksonville').style.display = 'block';
+      } else if ( {{.MyCity}} == "Jersey") {
+        document.getElementById('jersey').style.display = 'block';
+      } else if ( {{.MyCity}} == "Kansas") {
+        document.getElementById('kansas').style.display = 'block';
+      } else if ( {{.MyCity}} == "Laredo") {
+        document.getElementById('laredo').style.display = 'block';
+      } else if ( {{.MyCity}} == "Las Vegas") {
+        document.getElementById('lasvegas').style.display = 'block';
+      } else if ( {{.MyCity}} == "Lexington-Fayette") {
+        document.getElementById('lexingtonfayette').style.display = 'block';
+      } else if ( {{.MyCity}} == "Lincoln") {
+        document.getElementById('lincoln').style.display = 'block';
+      } else if ( {{.MyCity}} == "Long Beach") {
+        document.getElementById('longbeach').style.display = 'block';
+      } else if ( {{.MyCity}} == "Los Angeles") {
+        document.getElementById('losangeles').style.display = 'block';
+      } else if ( {{.MyCity}} == "Louisville") {
+        document.getElementById('louisville').style.display = 'block';
+      } else if ( {{.MyCity}} == "Lubbock") {
+        document.getElementById('lubbock').style.display = 'block';
+      } else if ( {{.MyCity}} == "Madison") {
+        document.getElementById('madison').style.display = 'block';
+      } else if ( {{.MyCity}} == "Memphis") {
+        document.getElementById('memphis').style.display = 'block';
+      } else if ( {{.MyCity}} == "Mesa") {
+        document.getElementById('mesa').style.display = 'block';
+      } else if ( {{.MyCity}} == "Miami") {
+        document.getElementById('miami').style.display = 'block';
+      } else if ( {{.MyCity}} == "Milwaukee") {
+        document.getElementById('milwaukee').style.display = 'block';
+      } else if ( {{.MyCity}} == "Minneapolis") {
+        document.getElementById('minneapolis').style.display = 'block';
+      } else if ( {{.MyCity}} == "Nashville") {
+        document.getElementById('nashville').style.display = 'block';
+      } else if ( {{.MyCity}} == "New Orleans") {
+        document.getElementById('neworleans').style.display = 'block';
+      } else if ( {{.MyCity}} == "New York City") {
+        document.getElementById('newyorkcity').style.display = 'block';
+      } else if ( {{.MyCity}} == "Newark") {
+        document.getElementById('newark').style.display = 'block';
+      } else if ( {{.MyCity}} == "Norfolk") {
+        document.getElementById('norfolk').style.display = 'block';
+      } else if ( {{.MyCity}} == "North Las Vegas") {
+        document.getElementById('northlasvegas').style.display = 'block';
+      } else if ( {{.MyCity}} == "Oakland") {
+        document.getElementById('oakland').style.display = 'block';
+      } else if ( {{.MyCity}} == "Oklahoma City") {
+        document.getElementById('oklahomacity').style.display = 'block';
+      } else if ( {{.MyCity}} == "Omaha") {
+        document.getElementById('omaha').style.display = 'block';
+      } else if ( {{.MyCity}} == "Orlando") {
+        document.getElementById('orlando').style.display = 'block';
+      } else if ( {{.MyCity}} == "Philadelphia") {
+        document.getElementById('philadelphia').style.display = 'block';
+      } else if ( {{.MyCity}} == "Phoenix") {
+        document.getElementById('phoenix').style.display = 'block';
+      } else if ( {{.MyCity}} == "Pittsburgh") {
+        document.getElementById('pittsburgh').style.display = 'block';
+      } else if ( {{.MyCity}} == "Plano") {
+        document.getElementById('plano').style.display = 'block';
+      } else if ( {{.MyCity}} == "Portland") {
+        document.getElementById('portland').style.display = 'block';
+      } else if ( {{.MyCity}} == "Raleigh") {
+        document.getElementById('raleigh').style.display = 'block';
+      } else if ( {{.MyCity}} == "Reno") {
+        document.getElementById('reno').style.display = 'block';
+      } else if ( {{.MyCity}} == "Riverside") {
+        document.getElementById('riverside').style.display = 'block';
+      } else if ( {{.MyCity}} == "Sacramento") {
+        document.getElementById('sacramento').style.display = 'block';
+      } else if ( {{.MyCity}} == "San Antonio") {
+        document.getElementById('sanantonio').style.display = 'block';
+      } else if ( {{.MyCity}} == "San Bernardino") {
+        document.getElementById('sanbernardino').style.display = 'block';
+      } else if ( {{.MyCity}} == "San Diego") {
+        document.getElementById('sandiego').style.display = 'block';
+      } else if ( {{.MyCity}} == "San Francisco") {
+        document.getElementById('sanfrancisco').style.display = 'block';
+      } else if ( {{.MyCity}} == "San Jose") {
+        document.getElementById('sanjose').style.display = 'block';
+      } else if ( {{.MyCity}} == "Santa Ana") {
+        document.getElementById('santaana').style.display = 'block';
+      } else if ( {{.MyCity}} == "Scottsdale") {
+        document.getElementById('scottsdale').style.display = 'block';
+      } else if ( {{.MyCity}} == "Seattle") {
+        document.getElementById('seattle').style.display = 'block';
+      } else if ( {{.MyCity}} == "St. Louis") {
+        document.getElementById('stlouis').style.display = 'block';
+      } else if ( {{.MyCity}} == "St. Paul") {
+        document.getElementById('stpaul').style.display = 'block';
+      } else if ( {{.MyCity}} == "St. Petersburg") {
+        document.getElementById('stpetersburg').style.display = 'block';
+      } else if ( {{.MyCity}} == "Stockton") {
+        document.getElementById('stockton').style.display = 'block';
+      } else if ( {{.MyCity}} == "Tampa") {
+        document.getElementById('tampa').style.display = 'block';
+      } else if ( {{.MyCity}} == "Toledo") {
+        document.getElementById('toledo').style.display = 'block';
+      } else if ( {{.MyCity}} == "Tucson") {
+        document.getElementById('tucson').style.display = 'block';
+      } else if ( {{.MyCity}} == "Tulsa") {
+        document.getElementById('tulsa').style.display = 'block';
+      } else if ( {{.MyCity}} == "Virginia Beach") {
+        document.getElementById('virginiabeach').style.display = 'block';
+      } else if ( {{.MyCity}} == "Washington") {
+        document.getElementById('washington').style.display = 'block';
+      } else if ( {{.MyCity}} == "Wichita") {
+        document.getElementById('wichita').style.display = 'block';
+      } else if ( {{.MyCity}} == "Winston-Salem") {
+        document.getElementById('winstonsalem').style.display = 'block';
+      }
+    }
+
+</script>
+
+<!--Output all the user's information: closest city, expected solar output in kwh
+optimal output with optimal angle, avg usage, percentage
+of their energy covered with a recommendation-->
+  {{with $2:=.MyCity}}
+    <p style = "color: darkslategray">Your closest city is {{$2}}.</p>
+    {{end}}
+  {{with $3:=.Output}}
+   <p style = "color: darkslategray">For your house size, your expected solar energy output is {{$3}} kwh per month. </p>
+  {{end}}
+  {{with $4:=.OptAngle}}
+   <p style = "color: darkslategray">For optimal solar energy output, use an angle of {{$4}} degrees. </p>
+  {{end}}
+  {{with $5:=.OptOutput}}
+   <p style = "color: darkslategray">The optimal solar energy output you could get is {{$5}} kwh per month.</p>
+  {{end}}
+  {{with $6:=.Usage}}
+  <span style = "color: blue">Since the average energy usage in your area for your house size is {{$6}} kwh per month,</span>
+  {{end}}
+  {{with $7:=.Percentage}}
+  <span style = "color: blue">and {{$7}}% of your energy would be covered by solar power, </span>
+  {{end}}
+  {{with $8:=.Optimal}}
+  <span style = "color: tomato">it {{$8}} to get solar panels.</span>
+  <br>
+
+<!--Next Section: Solar Panel Options. Outputs the companies in their area and compares
+pricing for panels (from a set of 6 most popular options).-->
+  <p id = "options">Click continue to view solar panel options, or click back to start over.</p>
+  <form>
+    <input type = "button"  id = "continue" value = "Continue" onclick = "HideShowText()">
+    <input action="action" onclick="window.history.go(-1); return false;" id = "back" type="button" value="Back" />
+  </form>
+  {{end}}
+  <div style = "display: none" id = "choosesolar">
+      <p>These solar installation companies serve your area: </p>
+      {{ range $9 := .Companies}}
+      <p style = "color: darkslategray">&nbsp;&nbsp;&nbsp;{{$9}}</p>
+    {{end}}
+  <p>Choose a solar panel brand to learn more: </p>
+
+<!--Displays radio buttons to the user, one for each brand.-->
+  <form method = "post">
+      <input type = "radio" id = "panel0" name = "panelName" value = "Suntech" onclick = "DisplayCost(0)"> Suntech
+      <input type = "radio" id = "panel1" name = "panelName" value = "Samsung" onclick = "DisplayCost(1)"> Samsung
+      <input type = "radio" id = "panel2" name = "panelName" value = "Kyocera" onclick = "DisplayCost(2)"> Kyocera
+      <input type = "radio" id = "panel3" name = "panelName" value = "CanadianSolar" onclick = "DisplayCost(3)"> CanadianSolar
+      <input type = "radio" id = "panel4" name = "panelName" value = "GrapeSolar290W" onclick = "DisplayCost(4)"> GrapeSolar390W
+      <input type = "radio" id = "panel5" name = "panelName" value = "GrapeSolar250" onclick = "DisplayCost(5)"> GrapeSolar250
+  </form>
+</div>
+
+<!--Tells the user how much installation, total cost, and num of panels for chosen brand-->
+<div style = "display:none" id = "panelchoice">
+<p style = "color: darkslategray">Installation will cost you ${{.InstCost}}.</p>
+<span style = "color: darkslategray">You will need </span>
+<span style = "color: darkslategray" id = "panelnumber"></span>
+<span style = "color: darkslategray"> panels.</span>
+<br>
+<br>
+<span style = "color: darkslategray">Total Cost: $</span>
+<span style = "color: darkslategray" id = "totalcost"></span>
+
+<!--Next section: Gives user preferences: price, efficiency, or output and gives a recommendation.-->
+<p id = "preferenceoptions">Click continue to receive a solar panel brand recommendation based on preference, or click back to start over.</p>
+<form>
+  <input type = "button"  id = "continue1" value = "Continue" onclick = "HideShowPreferences()">
+  <input action="action" onclick="window.history.go(-1); return false;" id = "back2" type="button" value="Back" />
+</form>
+</div>
+<br>
+
+<!--Drop down menu style options for preferences: most efficient, budget, most energy generated.-->
+<div style = "display: none" id = "choosepreference">
+  <p>Choose which is the most important to you.</p>
+<select id = "drop_down" onchange = "ShowHideRec()">
+  <option value ="nothing">Select One</option>
+  <option value="mincost">Budget</option>
+  <option value ="maxoutput">Energy Generated</option>
+  <option value ="maxefficiency">Most Efficient</option>
+</select>
+<br>
+<br>
+</div>
+
+<!--Output the recommended panel brand for chosen preference.-->
+<span style = "display: none" id = "mincost"> The lowest cost panel brand option is: </span>
+<br>
+<span id = "mincost2"></span>
+<span style = "display: none" id = "maxoutput"> The highest energy panel brand output option is: </span>
+<br>
+<span id = "maxoutput2"></span>
+<span style = "display: none" id = "maxefficiency"> The most efficient panel brand option is: </span>
+<br>
+<span id = "maxefficiency2"></span>
+<br>
+
+<script type="text/javascript">
+
+//Hides the buttons and prompt text and shows the radio buttons.
+function HideShowText() {
+  document.getElementById('choosesolar').style.display = 'block';
+  document.getElementById('continue').style.display = 'none';
+  document.getElementById('back').style.display = 'none';
+  document.getElementById('options').style.display = 'none';
+}
+
+//Displays the cost of the panels and number needed for the brand the user chooses.
+function DisplayCost(num){
+  document.getElementById('panelchoice').style.display = 'block';
+  //Convert to JS arrays
+  var numPanels = {{.NumPanels}};
+  var panelCost = {{.PanelCost}}
+  //Change the cost of panels and num of panels based on the type they choose
+  document.getElementById('panelnumber').innerHTML = numPanels[num];
+  document.getElementById('totalcost').innerHTML = panelCost[num]+".";
+}
+
+//Hides the continue and back buttons and prompt text and shows the drop down menu
+//for preferences.
+function HideShowPreferences() {
+  document.getElementById('choosepreference').style.display = 'block';
+  document.getElementById('continue1').style.display = 'none';
+  document.getElementById('back2').style.display = 'none';
+  document.getElementById('preferenceoptions').style.display = 'none';
+}
+
+//Shows the recommended panel brand for the preference that they choose.
+function ShowHideRec() {
+  var Preferences = {{.Recommendation}};
+  document.getElementById('mincost2').innerHTML = Preferences[0];
+  document.getElementById('maxoutput2').innerHTML = Preferences[1];
+  document.getElementById('maxefficiency2').innerHTML = Preferences[2];
+  if (document.getElementById('drop_down').value == 'mincost'){
+    document.getElementById('mincost').style.display = 'block';
+    document.getElementById('maxoutput').style.display = 'none';
+    document.getElementById('maxefficiency').style.display = 'none';
+    document.getElementById('mincost2').style.display = 'block';
+    document.getElementById('maxoutput2').style.display = 'none';
+    document.getElementById('maxefficiency2').style.display = 'none';
+  } else if (document.getElementById('drop_down').value == 'maxoutput'){
+    document.getElementById('mincost').style.display = 'none';
+    document.getElementById('maxoutput').style.display = 'block';
+    document.getElementById('maxefficiency').style.display = 'none';
+    document.getElementById('mincost2').style.display = 'none';
+    document.getElementById('maxoutput2').style.display = 'block';
+    document.getElementById('maxefficiency2').style.display = 'none';
+  } else if (document.getElementById('drop_down').value == 'maxefficiency'){
+    document.getElementById('mincost').style.display = 'none';
+    document.getElementById('maxoutput').style.display = 'none';
+    document.getElementById('maxefficiency').style.display = 'block';
+    document.getElementById('mincost2').style.display = 'none';
+    document.getElementById('maxoutput2').style.display = 'none';
+    document.getElementById('maxefficiency2').style.display = 'block';
+  } else {
+    document.getElementById('mincost').style.display = 'none';
+    document.getElementById('maxoutput').style.display = 'none';
+    document.getElementById('maxefficiency').style.display = 'none';
+    document.getElementById('mincost2').style.display = 'none';
+    document.getElementById('maxoutput2').style.display = 'none';
+    document.getElementById('maxefficiency2').style.display = 'none';
+  }
+}
+</script>
+
+<!--MAP MARKERS (uses an image for marker)-->
+<!--Albuquerque--><IMG STYLE="display: none; position:absolute; TOP:422px; LEFT:269px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "albuquerque">
+<!--Anaheim--><IMG STYLE="display: none; position:absolute; TOP:431px; LEFT:87px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "anaheim">
+<!--Arlington--><IMG STYLE="display: none; position:absolute; TOP:479px; LEFT:430px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "arlington">
+<!--Atlanta--><IMG STYLE="display: none; position:absolute; TOP:446px; LEFT:637px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "atlanta">
+<!--Aurora--><IMG STYLE="display: none; position:absolute; TOP:338px; LEFT:307px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "aurora">
+<!--Austin--><IMG STYLE="display: none; position:absolute; TOP:526px; LEFT:418px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "austin">
+<!--Bakersfield--><IMG STYLE="display: none; position:absolute; TOP:385px; LEFT:69px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "bakersfield">
+<!--Baltimore--><IMG STYLE="display: none; position:absolute; TOP:316px; LEFT:742px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "baltimore">
+<!--Baton Rouge--><IMG STYLE="display: none; position:absolute; TOP:519px; LEFT:528px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "batonrouge">
+<!--Birmingham--><IMG STYLE="display: none; position:absolute; TOP:455px; LEFT:597px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "birmingham">
+<!--Boise--><IMG STYLE="display: none; position:absolute; TOP:230px; LEFT:152px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "boise">
+<!--Boston--><IMG STYLE="display: none; position:absolute; TOP:230px; LEFT:809px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "boston">
+<!--Buffalo--><IMG STYLE="display: none; position:absolute; TOP:246px; LEFT:692px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "buffalo">
+<!--Chandler--><IMG STYLE="display: none; position:absolute; TOP:448px; LEFT:185px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "chandler">
+<!--Charlotte--><IMG STYLE="display: none; position:absolute; TOP:410px; LEFT:689px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "charlotte">
+<!--Chesapeake--><IMG STYLE="display: none; position:absolute; TOP:364px; LEFT:760px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "chesapeake">
+<!--Chicago--><IMG STYLE="display: none; position:absolute; TOP:291px; LEFT:567px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "chicago">
+<!--Chula Vista--><IMG STYLE="display: none; position:absolute; TOP:446px; LEFT:88px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "chulavista">
+<!--Cincinnati--><IMG STYLE="display: none; position:absolute; TOP:338px; LEFT:621px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "cincinnati">
+<!--Cleveland--><IMG STYLE="display: none; position:absolute; TOP:283px; LEFT:660px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "cleveland">
+<!--Colorado Springs--><IMG STYLE="display: none; position:absolute; TOP:352px; LEFT:305px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "coloradosprings">
+<!--Columbus--><IMG STYLE="display: none; position:absolute; TOP:323px; LEFT:645px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "columbus">
+<!--Corpus Christi--><IMG STYLE="display: none; position:absolute; TOP:585px; LEFT:413px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "corpuschristi">
+<!--Dallas--><IMG STYLE="display: none; position:absolute; TOP:479px; LEFT:430px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "dallas">
+<!--Denver--><IMG STYLE="display: none; position:absolute; TOP:336px; LEFT:305px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "denver">
+<!--Detroit--><IMG STYLE="display: none; position:absolute; TOP:274px; LEFT:633px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "detroit">
+<!--Durham--><IMG STYLE="display: none; position:absolute; TOP:387px; LEFT:722px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "durham">
+<!--El Paso--><IMG STYLE="display: none; position:absolute; TOP:490px; LEFT:264px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "elpaso">
+<!--Fort Wayne--><IMG STYLE="display: none; position:absolute; TOP:301px; LEFT:604px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "fortwayne">
+<!--Fort Worth--><IMG STYLE="display: none; position:absolute; TOP:479px; LEFT:427px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "fortworth">
+<!--Fremont--><IMG STYLE="display: none; position:absolute; TOP:326px; LEFT:33px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "fremont">
+<!--Fresno--><IMG STYLE="display: none; position:absolute; TOP:350px; LEFT:57px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "fresno">
+<!--Garland--><IMG STYLE="display: none; position:absolute; TOP:476px; LEFT:434px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "garland">
+<!--Gilbert--><IMG STYLE="display: none; position:absolute; TOP:444px; LEFT:182px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "gilbert">
+<!--Glendale--><IMG STYLE="display: none; position:absolute; TOP:438px; LEFT:176px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "glendale">
+<!--Greensboro--><IMG STYLE="display: none; position:absolute; TOP:390px; LEFT:719px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "greensboro">
+<!--Henderson--><IMG STYLE="display: none; position:absolute; TOP:389px; LEFT:137px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "henderson">
+<!--Hialeah--><IMG STYLE="display: none; position:absolute; TOP:598px; LEFT:726px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "hialeah">
+<!--Houston--><IMG STYLE="display: none; position:absolute; TOP:535px; LEFT:454px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "houston">
+<!--Indianapolis--><IMG STYLE="display: none; position:absolute; TOP:328px; LEFT:591px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "indianapolis">
+<!--Irvine--><IMG STYLE="display: none; position:absolute; TOP:432px; LEFT:88px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "irvine">
+<!--Irving--><IMG STYLE="display: none; position:absolute; TOP:475px; LEFT:424px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "irving">
+<!--Jacksonville--><IMG STYLE="display: none; position:absolute; TOP:509px; LEFT:691px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "jacksonville">
+<!--Jersey City--><IMG STYLE="display: none; position:absolute; TOP:275px; LEFT:775px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "jersey">
+<!--Kansas City--><IMG STYLE="display: none; position:absolute; TOP:353px; LEFT:466px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "kansas">
+<!--Laredo--><IMG STYLE="display: none; position:absolute; TOP:583px; LEFT:380px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "laredo">
+<!--Las Vegas--><IMG STYLE="display: none; position:absolute; TOP:386px; LEFT:136px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "lasvegas">
+<!--Lexington-Fayette--><IMG STYLE="display: none; position:absolute; TOP:360px; LEFT:627px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "lexingtonfayette">
+<!--Lincoln--><IMG STYLE="display: none; position:absolute; TOP:321px; LEFT:432px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "lincoln">
+<!--Long Beach--><IMG STYLE="display: none; position:absolute; TOP:431px; LEFT:83px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "longbeach">
+<!--Los Angeles--><IMG STYLE="display: none; position:absolute; TOP:427px; LEFT:82px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "losangeles">
+<!--Louisville--><IMG STYLE="display: none; position:absolute; TOP:355px; LEFT:605px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "louisville">
+<!--Lubbock--><IMG STYLE="display: none; position:absolute; TOP:463px; LEFT:345px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "lubbock">
+<!--Madison--><IMG STYLE="display: none; position:absolute; TOP:265px; LEFT:538px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "madison">
+<!--Memphis--><IMG STYLE="display: none; position:absolute; TOP:425px; LEFT:537px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "memphis">
+<!--Mesa--><IMG STYLE="display: none; position:absolute; TOP:444px; LEFT:182px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "mesa">
+<!--Miami--><IMG STYLE="display: none; position:absolute; TOP:606px; LEFT:726px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "miami">
+<!--Milwaukee--><IMG STYLE="display: none; position:absolute; TOP:265px; LEFT:561px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "milwaukee">
+<!--Minneapolis--><IMG STYLE="display: none; position:absolute; TOP:233px; LEFT:480px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "minneapolis">
+<!--Nashville--><IMG STYLE="display: none; position:absolute; TOP:404px; LEFT:588px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "nashville">
+<!--New Orleans--><IMG STYLE="display: none; position:absolute; TOP:529px; LEFT:548px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "neworleans">
+<!--New York City--><IMG STYLE="display: none; position:absolute; TOP:275px; LEFT:779px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "newyorkcity">
+<!--Newark--><IMG STYLE="display: none; position:absolute; TOP:276px; LEFT:773px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "newark">
+<!--Norfolk--><IMG STYLE="display: none; position:absolute; TOP:360px; LEFT:760px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "norfolk">
+<!--North Las Vegas--><IMG STYLE="display: none; position:absolute; TOP:386px; LEFT:136px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "northlasvegas">
+<!--Oakland--><IMG STYLE="display: none; position:absolute; TOP:324px; LEFT:30px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "oakland">
+<!--Oklahoma City--><IMG STYLE="display: none; position:absolute; TOP:414px; LEFT:415px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "oklahomacity">
+<!--Omaha--><IMG STYLE="display: none; position:absolute; TOP:317px; LEFT:443px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "omaha">
+<!--Orlando--><IMG STYLE="display: none; position:absolute; TOP:539px; LEFT:695px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "orlando">
+<!--Philadelphia--><IMG STYLE="display: none; position:absolute; TOP:294px; LEFT:762px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "philadelphia">
+<!--Phoenix--><IMG STYLE="display: none; position:absolute; TOP:441px; LEFT:178px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "phoenix">
+<!--Pittsburgh--><IMG STYLE="display: none; position:absolute; TOP:300px; LEFT:687px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "pittsburgh">
+<!--Plano--><IMG STYLE="display: none; position:absolute; TOP:472px; LEFT:433px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "plano">
+<!--Portland--><IMG STYLE="display: none; position:absolute; TOP:167px; LEFT:72px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "portland">
+<!--Raleigh--><IMG STYLE="display: none; position:absolute; TOP:389px; LEFT:727px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "raleigh">
+<!--Reno--><IMG STYLE="display: none; position:absolute; TOP:298px; LEFT:77px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "reno">
+<!--Riverside--><IMG STYLE="display: none; position:absolute; TOP:430px; LEFT:91px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "riverside">
+<!--Sacramento--><IMG STYLE="display: none; position:absolute; TOP:310px; LEFT:48px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "sacramento">
+<!--San Antonio--><IMG STYLE="display: none; position:absolute; TOP:543px; LEFT:401px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "sanantonio">
+<!--San Bernardino--><IMG STYLE="display: none; position:absolute; TOP:431px; LEFT:97px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "sanbernardino">
+<!--San Diego--><IMG STYLE="display: none; position:absolute; TOP:443px; LEFT:86px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "sandiego">
+<!--San Francisco--><IMG STYLE="display: none; position:absolute; TOP:327px; LEFT:25px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "sanfrancisco">
+<!--San Jose--><IMG STYLE="display: none; position:absolute; TOP:332px; LEFT:34px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "sanjose">
+<!--Santa Ana--><IMG STYLE="display: none; position:absolute; TOP:432px; LEFT:88px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "santaana">
+<!--Scottsdale--><IMG STYLE="display: none; position:absolute; TOP:439px; LEFT:184px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "scottsdale">
+<!--Seattle--><IMG STYLE="display: none; position:absolute; TOP:123px; LEFT:91px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "seattle">
+<!--St. Louis--><IMG STYLE="display: none; position:absolute; TOP:359px; LEFT:530px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "stlouis">
+<!--St. Paul--><IMG STYLE="display: none; position:absolute; TOP:231px; LEFT:487px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "stpaul">
+<!--St. Petersburg--><IMG STYLE="display: none; position:absolute; TOP:562px; LEFT:680px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "stpetersburg">
+<!--Stockton--><IMG STYLE="display: none; position:absolute; TOP:319px; LEFT:50px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "stockton">
+<!--Tampa--><IMG STYLE="display: none; position:absolute; TOP:560px; LEFT:685px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "tampa">
+<!--Toledo--><IMG STYLE="display: none; position:absolute; TOP:285px; LEFT:630px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "toledo">
+<!--Tuscon--><IMG STYLE="display: none; position:absolute; TOP:466px; LEFT:191px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "tucson">
+<!--Tulsa--><IMG STYLE="display: none; position:absolute; TOP:414px; LEFT:424px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "tulsa">
+<!--Virginia Beach--><IMG STYLE="display: none; position:absolute; TOP:359px; LEFT:762px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "virginiabeach">
+<!--Washington--><IMG STYLE="display: none; position:absolute; TOP:330px; LEFT:738px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "washington">
+<!--Wichita--><IMG STYLE="display: none; position:absolute; TOP:382px; LEFT:418px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "wichita">
+<!--Winston-Salem--><IMG STYLE="display: none; position:absolute; TOP:390px; LEFT:708px; WIDTH:50px; HEIGHT:50px" SRC="http://www.clker.com/cliparts/B/l/M/x/J/M/map-pin-red.svg"; id = "winstonsalem">
+
+<script type="text/javascript">
+  //Marker of the city will display on the map.
+   Display();
+ </script>
+</font>
+</body>
+<br>
+<span><font size = "2" color = "#6959CD" face = "palatino">Created by: Sarah Hsu and Caryn Willis</font></span>
+
+</html>
