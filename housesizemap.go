@@ -4,7 +4,7 @@ Description: This program takes in roof and house size and creates
 a visual of the United States with color coded recommendations for
 each city.*/
 
-//This file is written by Ryder Malastare
+//This file is written by Caryn Willis
 
 package main
 
