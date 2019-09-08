@@ -1,9 +1,9 @@
-/*Authors: Sarah Hsu and Caryn Willis
+/*Practitioner: Rihad Variawa
 Description: This program takes in roof and house size and creates
 a visual of the United States with color coded recommendations for
 each city.*/
 
-//This file is written by Caryn Willis.
+//This file is written by Ryder Malastare
 
 package main
 
@@ -15,7 +15,7 @@ import (
 	"strings"
 )
 
-//This section asks the user for their house and roof size.
+//This section asks the user for their house and roof size
 func DisplayHouseSize(w http.ResponseWriter, r *http.Request) {
 	PageTitle := "Heat Map"
 
@@ -43,7 +43,7 @@ func DisplayHouseSize(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//This section is where the user can look at their results based on their input.
+//This section is where the user can look at their results based on their input
 //It will display a map based on recommendation (based on their % of energy
 //covered) and also give the cities which fall into each recommendation
 //category.
@@ -89,7 +89,7 @@ func UserInteracts(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Makes a map of color markers for each city based on chose house size and difference in output
+//Makes a map of color markers for each city based on chosen house size and difference in output
 func MakeColorMarkers(cityData map[string]City, houseSize, roofSize float64) map[string]string {
 	var output, avgEnergy float64
 	var mapColor string
@@ -105,7 +105,7 @@ func MakeColorMarkers(cityData map[string]City, houseSize, roofSize float64) map
 	return colors
 }
 
-//Computes differece in energy and chooses color
+//Computes difference in energy and chooses color
 func MapColor(avgEnergy, energyOutput float64) string {
 	percentage := energyOutput / avgEnergy
 	var color string
@@ -130,7 +130,7 @@ func MakeList(colors map[string]string, color string) []string {
 	return cityList
 }
 
-//Computes the percentage of the cities that are difined as a certain color
+//Computes the percentage of the cities that are defined as a certain color
 func ColorPercent(colors map[string]string, color string) float64 {
 	var colorCount int
 	for _, mapColor := range colors {
@@ -142,7 +142,7 @@ func ColorPercent(colors map[string]string, color string) float64 {
 	//since there are 98 cities
 }
 
-//Make an array of the city names.
+//Make an array of the city names
 func MakeCityArray(filename string) []string {
 	lines := ReadFile(filename)
 	cityArray := make([]string, 0)
@@ -153,7 +153,7 @@ func MakeCityArray(filename string) []string {
 	return cityArray
 }
 
-//Make an array of colors based alphabetically.
+//Make an array of colors based alphabetically
 func MakeColors(filename string, cityData map[string]City, houseSize, roofSize float64) []string {
 	var output, avgEnergy float64
 	var mapColor string
