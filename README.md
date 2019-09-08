@@ -1,6 +1,6 @@
 ## clean-energy-app
 
-[](https://media.giphy.com/media/c3HczzhNAceOI/giphy.gif)
+![](https://media.giphy.com/media/c3HczzhNAceOI/giphy.gif)
 
 Received: 01 June 2017; Accepted: 13 December 2017; Published: 03 January 2018
 
