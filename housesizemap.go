@@ -1,4 +1,5 @@
 /*Practitioner: Rihad Variawa
+Authors: Sarah Hsu and Caryn Willis
 Description: This program takes in roof and house size and creates
 a visual of the United States with color coded recommendations for
 each city.*/

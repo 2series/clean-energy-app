@@ -1,10 +1,11 @@
 /*Practitioner: Rihad Variawa
+Authors: Sarah Hsu and Caryn Willis
 Description: This program takes in roof, house size, and coordinates
 to give to the user some useful information about
 installing solar panels in their home.*/
 
 /*This file is written by Sarah Hsu, except functions MakeCity(),
-MakeCityMap(), and ReadFile() were written by Ryder Malastare.*/
+MakeCityMap(), and ReadFile() were written by Caryn Willis.*/
 
 package main
 
